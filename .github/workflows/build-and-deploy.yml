@@ -57,4 +57,9 @@ jobs:
         
       - name: List files in root directory
         run: ls -la
+      
+      - name: List files in root directory - PowerShell Script
+        run: |
+          Get-ChildItem -Path . | ForEach-Object { Write-Output $_.Name }
+        shell: pwsh
 

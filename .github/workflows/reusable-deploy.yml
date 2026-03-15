@@ -1,0 +1,44 @@
+name: Reusable Workflow for Deploying .NET App
+
+on:
+  workflow_call:
+    inputs:
+      package-name:
+        required: true
+        type: string
+      app-name:
+        required: true
+        type: string
+      deployment-slot:
+        required: true
+        type: string
+    secrets:
+      azure-profile:
+        required: true
+
+jobs:
+  deploy-job:
+    name: "deploy job"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v8.0.1
+        with:
+          name: ${{ inputs.package-name }}
+
+      - name: Secret Information
+        run: |
+          echo "Value secret matches: ${{ secrets.azure-profile == 'Placeholder'}}"
+          
+      - name: Print Name of Azure Web App to Deploy and Deployment Slot 
+        run: |
+          echo "Azure Web App Name: ${{ inputs.app-name }} and Deployment Slot: ${{ inputs.deployment-slot }}"
+        
+      - name: List files in root directory
+        run: ls -la
+      
+      - name: List files in root directory - PowerShell Script
+        run: |
+          Get-ChildItem -Path . | ForEach-Object { Write-Output $_.Name }
+        shell: pwsh

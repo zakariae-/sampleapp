@@ -1,0 +1,42 @@
+name: Build and Call Reusable Deploy
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-job:
+    name: "build job"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v6.0.2
+
+      - name: Set up .NET Core
+        uses: actions/setup-dotnet@v5.2.0
+        with:
+          dotnet-version: 9.x
+      
+      - name: Build with dotnet
+        run: dotnet build --configuration Release
+
+      - name: Publish with dotnet
+        run: dotnet publish --configuration Release --property:PublishDir="${{ env.DOTNET_ROOT }}/publish"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v7.0.0
+        with:
+          name: .sample-app
+          path: ${{ env.DOTNET_ROOT }}/publish
+
+  call-reusable-deploy-job:
+    name: "call reusable deploy job"
+    needs: build-job
+
+    uses: ./.github/workflows/reusable-deploy.yml
+    with:
+        package-name: .net-app
+        app-name: appsvc1
+        deployment-slot: development
+    secrets:
+        azure-profile: ${{ secrets.AZURE_PUBLISH_PROFILE }}

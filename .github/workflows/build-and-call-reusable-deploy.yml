@@ -33,7 +33,7 @@ jobs:
     name: "call reusable deploy job"
     needs: build-job
 
-    uses: ./.github/workflows/reusable-deploy.yml
+    uses: zakariae-/shared-workflow/tree/main/.github/workflows/reusable-deploy.yml@main
     with:
         package-name: .sample-app
         app-name: appsvc1

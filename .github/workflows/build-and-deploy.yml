@@ -26,11 +26,11 @@ jobs:
       - name: Publish with dotnet
         run: |
           echo "::group::Before Publishing the app"
-          ls
+          ls ${{ env.DOTNET_ROOT }}
           echo "::endgroup::"
     
           dotnet publish --configuration Release --property:PublishDir="${{ env.DOTNET_ROOT }}/publish"
     
           echo "::group::After Publishing the app"
-          ls
+          ls ${{ env.DOTNET_ROOT }}
           echo "::endgroup::"

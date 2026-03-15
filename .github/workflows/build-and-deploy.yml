@@ -34,3 +34,9 @@ jobs:
           echo "::group::After Publishing the app"
           ls ${{ env.DOTNET_ROOT }}
           echo "::endgroup::"
+          
+          - name: Publish repository
+            run: |
+              ls
+            working-directory: ${{ env.DOTNET_ROOT }}/publish
+

@@ -35,7 +35,7 @@ jobs:
 
     uses: ./.github/workflows/reusable-deploy.yml
     with:
-        package-name: .net-app
+        package-name: .sample-app
         app-name: appsvc1
         deployment-slot: development
     secrets:

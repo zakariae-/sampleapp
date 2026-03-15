@@ -24,19 +24,11 @@ jobs:
         run: dotnet build --configuration Release
 
       - name: Publish with dotnet
-        run: |
-          echo "::group::Before Publishing the app"
-          ls ${{ env.DOTNET_ROOT }}
-          echo "::endgroup::"
-    
-          dotnet publish --configuration Release --property:PublishDir="${{ env.DOTNET_ROOT }}/publish"
-    
-          echo "::group::After Publishing the app"
-          ls ${{ env.DOTNET_ROOT }}
-          echo "::endgroup::"
-          
-      - name: Publish repository
-        run: |
-          ls
-        working-directory: ${{ env.DOTNET_ROOT }}/publish
+        run: dotnet publish --configuration Release --property:PublishDir="${{ env.DOTNET_ROOT }}/publish
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v7.0.0
+        with:
+          name: .sample-app
+          path: ${{ env.DOTNET_ROOT }}/publish
 
